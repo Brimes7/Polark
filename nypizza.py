@@ -16,6 +16,7 @@ PARAMS =  {
 # r = requests.post(URL, data=json.dumps(PARAMS), headers={"Content-Type": 'application/json'})
 # data = r.json()
 # print(PARAMS)
+
 def send_pizza_req(email, phone):
     params = {
         "email": email,
@@ -28,6 +29,13 @@ def send_pizza_req(email, phone):
     print(f"SENT PIZZA REQUEST FOR {email}")
 
 nypizza = Flask(__name__)
+
+
+@nypizza.route('/', methods=['GET'])
+def hello():
+    return "HELLO"
+
+
 # Intitiates the listener
 @nypizza.route('/', methods=['POST'])
 def pizzafun():
