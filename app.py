@@ -51,8 +51,6 @@ def check_main_msgs(msgs, emailAddress, phoneNumber):
         kind = msg["kind"]
         if check_msg_kind(kind) and check_msg_body(body):
             send_pizza_req(emailAddress, phoneNumber)
-        else:
-            return saladlover()
 
 #Check if even in NY
 def check_ny(city):
@@ -83,14 +81,15 @@ def pizzafun():
 
     items = request.json["items"]
     visitor = request.json["visitor"]
-
     city = visitor["city"]
+
     #implementing objects to call them
     if check_ny(city):
         check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
     elif check_msg_body(items):
         check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
         return saladlover()
+        print("No pizza items discussed")
     else:
         return notny()
 
