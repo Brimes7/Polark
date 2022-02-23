@@ -1,5 +1,4 @@
 import sys
-import requests
 import json
 from flask import Flask, request, abort
 
@@ -25,19 +24,19 @@ def send_pizza_req(email, phone):
         "topping": "cheese"
     }
 
-    r = requests.post(URL, data=json.dumps(params), headers={"Content-Type": 'application/json'})
+    r = request.post(URL, data=json.dumps(params), headers={"Content-Type": 'application/json'})
     print(f"SENT PIZZA REQUEST FOR {email}")
 
-nypizza = Flask(__name__)
+app = Flask(__name__)
 
 
-@nypizza.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def hello():
     return "HELLO"
 
 
 # Intitiates the listener
-@nypizza.route('/', methods=['POST'])
+@app.route('/', methods=['POST'])
 def pizzafun():
 
     items = request.json["items"]
@@ -55,7 +54,7 @@ def pizzafun():
 
     return 'PIZZA TIME'
 # THIS IS THE LISTENER
-@nypizza.route('/custom', methods=['POST'])
+@app.route('/custom', methods=['POST'])
 def webhook():
     print("\n\nReceived")
     sys.stdout.flush()
@@ -65,7 +64,7 @@ def webhook():
     else:
         abort(400)
 
-@nypizza.route('/notny', methods=['POST'])
+@app.route('/notny', methods=['POST'])
 def notny():
     print("\n\nReceived")
     sys.stdout.flush()
@@ -75,7 +74,7 @@ def notny():
     else:
         abort(400)
 
-@nypizza.route('/saladlover', methods=['POST'])
+@app.route('/saladlover', methods=['POST'])
 def saladlover():
     print("\n\nReceived")
     sys.stdout.flush()
@@ -86,4 +85,4 @@ def saladlover():
         abort(400)
 
 if __name__ == '__main__':
-    nypizza.run(debug=True)
+    app.run(debug=True)
