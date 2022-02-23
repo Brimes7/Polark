@@ -12,7 +12,7 @@ PARAMS =  {
            "topping": "cheese"
         }
 r = requests.get(url = URL, params = PARAMS)
-# That one will only pull from local server not our URL
+# That one  will only pull from local server not our URL
 # r = requests.post(polark_url, data=json.dumps(data ), headers={"Content-Type": 'application/json'})
 data = r.json()
 print(PARAMS)
