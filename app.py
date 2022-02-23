@@ -83,7 +83,7 @@ def pizzafun():
 
     items = request.json["items"]
     visitor = request.json["visitor"]
-    body = visitor["body"]
+
     city = visitor["city"]
     #implementing objects to call them
     if check_ny(city):
