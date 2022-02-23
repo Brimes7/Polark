@@ -2,9 +2,9 @@ import sys
 import json
 import requests
 from flask import Flask, request, abort
-
+#URL
 URL = 'https://young-robust-angolatitan.glitch.me/olark'
-
+#dummy data
 PARAMS =  {
            "email": "test@olark.com",
            "phone": "7038671223",
@@ -36,36 +36,26 @@ def hello():
     return "HELLO"
 
 
-# Intitiates the listener
-@app.route('/', methods=['POST'])
-def pizzafun():
+def check_msg_body(body):
+    return "pizza" in body.lower()
 
-    items = request.json["items"]
-    visitor = request.json["visitor"]
-    for msg in items:
-        print(msg)
+
+def check_msg_kind(kind):
+    return kind == "MessageToOperator"
+
+def check_main_msgs(msgs, emailAddress, phoneNumber):
+    for msg in msgs:
+
         body = msg["body"]
-        print(body)
+
         kind = msg["kind"]
-        if kind == "MessageToOperator":
-            if "pizza" in body:
-                send_pizza_req(visitor["emailAddress"], visitor["phoneNumber"])
+        if check_msg_kind(kind) and check_msg_body(body):
+            send_pizza_req(emailAddress, phoneNumber)
 
 
+def check_ny(city):
+    return "new york" in city.lower()
 
-    return 'PIZZA TIME'
-# THIS IS THE LISTENER
-@app.route('/custom', methods=['POST'])
-def webhook():
-    print("\n\nReceived")
-    sys.stdout.flush()
-    if request.method == 'POST':
-        print(request.json)
-        return 'NEW WEBHOOK WORKS', 200
-    else:
-        abort(400)
-
-@app.route('/notny', methods=['POST'])
 def notny():
     print("\n\nReceived")
     sys.stdout.flush()
@@ -75,7 +65,33 @@ def notny():
     else:
         abort(400)
 
-@app.route('/saladlover', methods=['POST'])
+
+# Intitiates the listener
+@app.route('/', methods=['POST'])
+def pizzafun():
+
+    items = request.json["items"]
+    visitor = request.json["visitor"]
+    city = visitor["city"]
+    #not a string until you pull it out || Still an object
+    if check_ny(city):
+        check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
+    else:
+        return notny()
+
+    return 'PIZZA TIME'
+# THIS IS THE LISTENER
+# @app.route('/custom', methods=['POST'])
+# def webhook():
+#     print("\n\nReceived")
+#     sys.stdout.flush()
+#     if request.method == 'POST':
+#         print(request.json)
+#         return 'NEW WEBHOOK WORKS', 200
+#     else:
+#         abort(400)
+
+
 def saladlover():
     print("\n\nReceived")
     sys.stdout.flush()
