@@ -36,25 +36,54 @@ def hello():
     return "HELLO NEW YORK CITY!"
 
 #Checks the body
+#Cannot get pizza function to run proper
 def check_msg_body(body):
+    # for z in range(len(body)):
+    #     body[z] = body[z].lower()
     return "pizza" in body.lower()
 
 #Checks the kind
 def check_msg_kind(kind):
     return kind == "MessageToOperator"
+
+def pizza_lover():
+    print("\n\nReceived")
+    sys.stdout.flush()
+    if request.method == 'POST':
+        print(request.json)
+        return "CUSTOMER DID MENTION A PIZZA"
+    else:
+        abort(400)
+
+def salad_lover():
+    print("\n\nReceived")
+    sys.stdout.flush()
+    if request.method == 'POST':
+        print(request.json)
+        return "CUSTOMER DID NOT MENTION A PIZZA"
+    else:
+        abort(400)
 #Checks the main messages
 def check_main_msgs(msgs, emailAddress, phoneNumber):
     for msg in msgs:
 
         body = msg["body"]
-
         kind = msg["kind"]
+        #Why is this not reading skips and goes to else
         if check_msg_kind(kind) and check_msg_body(body):
+            print("Pizza mentioned")
             send_pizza_req(emailAddress, phoneNumber)
+        else:
+            print("Customer May live in NY but did not mention Pizza")
+            return salad_lover()
+
+        return pizza_lover()
+
 
 #Check if even in NY
 def check_ny(city):
     return "new york" in city.lower()
+
 
 def notny():
     print("\n\nReceived")
@@ -62,15 +91,6 @@ def notny():
     if request.method == 'POST':
         print(request.json)
         return"CUSTOMER NOT IN NEW YORK AREA. INELLIGBLE FOR PIZZA ROLLOUT."
-    else:
-        abort(400)
-
-def saladlover():
-    print("\n\nReceived")
-    sys.stdout.flush()
-    if request.method == 'POST':
-        print(request.json)
-        return "CUSTOMER NEVER MENTIONED A PIZZA"
     else:
         abort(400)
 
@@ -83,17 +103,15 @@ def pizzafun():
     visitor = request.json["visitor"]
     city = visitor["city"]
 
+
     #implementing objects to call them
+    # if check_ny(city) and items == check_msg_body:
     if check_ny(city):
         check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
-    elif check_msg_body(items):
-        check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
-        return saladlover()
-        print("No pizza items discussed")
     else:
         return notny()
 
-    return 'IT IS PIZZA TIME'
+    return check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
 
 if __name__ == '__main__':
     app.run(debug=True)
