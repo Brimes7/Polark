@@ -1,5 +1,6 @@
 import sys
 import json
+import requests
 from flask import Flask, request, abort
 
 URL = 'https://young-robust-angolatitan.glitch.me/olark'
@@ -24,7 +25,7 @@ def send_pizza_req(email, phone):
         "topping": "cheese"
     }
 
-    r = request.post(URL, data=json.dumps(params), headers={"Content-Type": 'application/json'})
+    r = requests.post(URL, data=json.dumps(params), headers={"Content-Type": 'application/json'})
     print(f"SENT PIZZA REQUEST FOR {email}")
 
 app = Flask(__name__)
