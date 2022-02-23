@@ -85,7 +85,8 @@ def pizzafun():
     #implementing objects to call them
     if check_ny(city):
         check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
-    elif check_msg_body(items) != "pizza":
+    elif check_msg_body(items):
+        check_main_msgs(items, visitor["emailAddress"], visitor["phoneNumber"])
         return saladlover()
     else:
         return notny()
