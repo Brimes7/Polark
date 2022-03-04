@@ -12,4 +12,6 @@ OBJECT OF THE GAME
 
 LIVE SITE https://polark-pizza.herokuapp.com/
 
+TO TEST IN POSTMAN - copy pasta link in post request and data in body of json. Get request is also functional but grabs no data as the purpose was only post.
+
 HOSTED ON HEROKU
